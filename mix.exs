@@ -1,16 +1,19 @@
 defmodule Nilsimsa.MixProject do
   use Mix.Project
 
+  @version "1.0.0"
+  @url "https://github.com/philipbrown/elixir-nilsimsa"
+
   def project do
     [
       app: :nilsimsa,
-      version: "1.0.0",
+      version: @version,
       elixir: "~> 1.11",
       package: package(),
       description: description(),
-      docs: [main: "Nilsimsa"],
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      docs: docs(),
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
@@ -39,10 +42,19 @@ defmodule Nilsimsa.MixProject do
     "Nilsimsa locality-sensitive hashing algorithm in Elixir."
   end
 
+  defp docs do
+    [
+      main: "Nilsimsa",
+      source_ref: "v#{@version}",
+      source_url: @url
+    ]
+  end
+
   defp package() do
     [
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/philipbrown/elixir-nilsimsa"}
+      maintainers: ["Philip Brown"],
+      links: %{"GitHub" => @url}
     ]
   end
 end

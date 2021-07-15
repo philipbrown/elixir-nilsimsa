@@ -1,6 +1,6 @@
 # Nilsimsa
 
-[Documentation](https://hexdocs.pm/nilsimsa)
+[Documentation](https://hexdocs.pm/nilsimsa/)
 
 ```elixir
  def deps do
