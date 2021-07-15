@@ -8,6 +8,7 @@ defmodule Nilsimsa.MixProject do
       elixir: "~> 1.11",
       package: package(),
       description: description(),
+      docs: [main: "Nilsimsa"],
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       preferred_cli_env: [
