@@ -3,7 +3,7 @@ defmodule NilsimsaTest do
 
   doctest Nilsimsa
 
-  # Examples take from:
+  # Examples taken from:
   # https://github.com/rholder/nilsimsa/blob/110b236de3505e4ee64d485f7499d4ce1cf34cc6/src/test/java/com/github/rholder/nilsimsa/NilsimsaHashTest.java
 
   @a k: "abcdefgh",

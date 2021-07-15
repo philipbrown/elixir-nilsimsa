@@ -1,7 +1,9 @@
 defmodule Nilsimsa do
-  @moduledoc """
-  Nilsimsa
-  """
+  @external_resource "README.md"
+  @moduledoc "README.md"
+             |> File.read!()
+             |> String.split("<!-- MDOC !-->")
+             |> Enum.fetch!(1)
 
   use Bitwise, skip_operators: true
 
@@ -34,6 +36,16 @@ defmodule Nilsimsa do
             window: for(_ <- 0..3, do: -1)
 
   @doc """
+  Compare two hashed values
+
+  This returns a value between -127 and 128 where -127 is different and 128 is
+  similar.
+
+  ## Examples
+
+      iex> Nilsimsa.compare(Nilsimsa.process("abc"), Nilsimsa.process("def"))
+      126
+
   """
   @spec compare(t, t) :: integer
   def compare(%{digest: a}, %{digest: b}) when is_list(a) and is_list(b) do
@@ -47,6 +59,13 @@ defmodule Nilsimsa do
   end
 
   @doc """
+  Generate the digest of a hash
+
+  ## Examples
+
+      iex> to_string(Nilsimsa.digest(Nilsimsa.process("abcdefgh")))
+      "14c8118000000000030800000004042004189020001308014088003280000078"
+
   """
   @spec digest(t) :: t
   def digest(nilsimsa) do
@@ -67,6 +86,13 @@ defmodule Nilsimsa do
   end
 
   @doc """
+  Process the given string as a Nilsimsa hash
+
+  ## Examples
+
+      iex> to_string(Nilsimsa.process("abcdefghijklmnopqrstuvwxyz"))
+      "94ca95850773045cabb93869ba8657373499beb81a17587fd6f9107fc54cc978"
+
   """
   @spec process(String.t()) :: t
   def process(binary) do
@@ -74,6 +100,13 @@ defmodule Nilsimsa do
   end
 
   @doc """
+  Process the given string as a Nilsimsa hash using the given accumulator struct
+
+  ## Examples
+
+      iex> to_string(Nilsimsa.process("abcdefghijklmnopqrstuvwxyz", %Nilsimsa{}))
+      "94ca95850773045cabb93869ba8657373499beb81a17587fd6f9107fc54cc978"
+
   """
   @spec process(String.t(), t) :: t
   def process(<<c::utf8, rest::binary>>, %{acc: acc, window: win} = nilsimsa) do
