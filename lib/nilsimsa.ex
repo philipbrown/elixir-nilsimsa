@@ -11,7 +11,7 @@ defmodule Nilsimsa do
 
   alias Nilsimsa.{Hamming, Transition}
 
-  @tran3 Transition.generate(53)
+  @tran Transition.generate(53)
   @popc Hamming.generate()
 
   @type t :: %__MODULE__{
@@ -59,9 +59,8 @@ defmodule Nilsimsa do
     end)
   end
 
-  def compare(a, b) do
-    compare(digest(a), digest(b))
-  end
+  def compare(a, b),
+    do: compare(digest(a), digest(b))
 
   @doc """
   Generate the digest of a hash
@@ -100,9 +99,8 @@ defmodule Nilsimsa do
 
   """
   @spec process(String.t()) :: t
-  def process(binary) do
-    process(binary, %__MODULE__{})
-  end
+  def process(binary),
+    do: process(binary, %__MODULE__{})
 
   @doc """
   Process the given string as a Nilsimsa hash using the given accumulator struct
@@ -117,7 +115,7 @@ defmodule Nilsimsa do
   def process(<<c::utf8, rest::binary>>, %{acc: acc, window: win} = nilsimsa) do
     acc =
       if at(win, 1) > -1 do
-        List.update_at(acc, tran3(c, at(win, 0), at(win, 1), 0), &(&1 + 1))
+        List.update_at(acc, tran(c, at(win, 0), at(win, 1), 0), &(&1 + 1))
       else
         acc
       end
@@ -125,8 +123,8 @@ defmodule Nilsimsa do
     acc =
       if at(win, 2) > -1 do
         acc
-        |> List.update_at(tran3(c, at(win, 0), at(win, 2), 1), &(&1 + 1))
-        |> List.update_at(tran3(c, at(win, 1), at(win, 2), 2), &(&1 + 1))
+        |> List.update_at(tran(c, at(win, 0), at(win, 2), 1), &(&1 + 1))
+        |> List.update_at(tran(c, at(win, 1), at(win, 2), 2), &(&1 + 1))
       else
         acc
       end
@@ -134,11 +132,11 @@ defmodule Nilsimsa do
     acc =
       if at(win, 3) > -1 do
         acc
-        |> List.update_at(tran3(c, at(win, 0), at(win, 3), 3), &(&1 + 1))
-        |> List.update_at(tran3(c, at(win, 1), at(win, 3), 4), &(&1 + 1))
-        |> List.update_at(tran3(c, at(win, 2), at(win, 3), 5), &(&1 + 1))
-        |> List.update_at(tran3(at(win, 3), at(win, 0), c, 6), &(&1 + 1))
-        |> List.update_at(tran3(at(win, 3), at(win, 2), c, 7), &(&1 + 1))
+        |> List.update_at(tran(c, at(win, 0), at(win, 3), 3), &(&1 + 1))
+        |> List.update_at(tran(c, at(win, 1), at(win, 3), 4), &(&1 + 1))
+        |> List.update_at(tran(c, at(win, 2), at(win, 3), 5), &(&1 + 1))
+        |> List.update_at(tran(at(win, 3), at(win, 0), c, 6), &(&1 + 1))
+        |> List.update_at(tran(at(win, 3), at(win, 2), c, 7), &(&1 + 1))
       else
         acc
       end
@@ -152,20 +150,19 @@ defmodule Nilsimsa do
     process(rest, nilsimsa)
   end
 
-  def process(<<>>, nilsimsa) do
-    nilsimsa
-  end
+  def process(<<>>, nilsimsa),
+    do: nilsimsa
 
   ###########
   # Private #
   ###########
 
-  defp tran3(a, b, c, n) do
-    @tran3
+  defp tran(a, b, c, n) do
+    @tran
     |> at(a + n)
     |> band(255)
-    |> bxor(at(@tran3, b) * (n + n + 1))
-    |> Kernel.+(at(@tran3, bxor(c, at(@tran3, n))))
+    |> bxor(at(@tran, b) * (n + n + 1))
+    |> Kernel.+(at(@tran, bxor(c, at(@tran, n))))
     |> band(255)
   end
 
@@ -177,7 +174,7 @@ end
 
 defimpl String.Chars, for: Nilsimsa do
   @moduledoc """
-  String.Chars protocol for Nilsimsa
+  String.Chars protocol for Nilsimsa.
   """
 
   import Kernel, except: [to_string: 1]

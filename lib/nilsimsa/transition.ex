@@ -11,6 +11,8 @@ defmodule Nilsimsa.Transition do
   @doc """
   Generate a transition table.
 
+  ## Examples
+
     iex>  Transition.generate(53) |> Enum.take(3)
     [2, 214, 158]
 

@@ -19,6 +19,8 @@ defmodule Nilsimsa.Hamming do
   @doc """
   Generate a hamming distance optimisation table.
 
+  ## Examples
+
       iex> table = Hamming.generate()
       iex> Enum.at(table, bxor(9, 14))
       3
