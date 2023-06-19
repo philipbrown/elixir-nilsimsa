@@ -5,21 +5,14 @@ defmodule Nilsimsa do
              |> String.split("<!-- MDOC !-->")
              |> Enum.fetch!(1)
 
-  use Bitwise, skip_operators: true
+  import Bitwise
 
   import Enum, only: [at: 2]
 
-  @tran3 :nilsimsa
-         |> Application.app_dir("priv/tran3")
-         |> File.read!()
-         |> String.split("\n")
-         |> Enum.map(&String.to_integer(&1))
+  alias Nilsimsa.{Hamming, Transition}
 
-  @popc :nilsimsa
-        |> Application.app_dir("priv/popc")
-        |> File.read!()
-        |> String.split("\n")
-        |> Enum.map(&String.to_integer(&1))
+  @tran3 Transition.generate(53)
+  @popc Hamming.generate()
 
   @type t :: %__MODULE__{
           acc: list(integer()),
