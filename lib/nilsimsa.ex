@@ -29,6 +29,18 @@ defmodule Nilsimsa do
             window: for(_ <- 0..3, do: -1)
 
   @doc """
+  Create a new Nilsimsa.
+
+  ## Examples
+
+      iex> Nilsimsa.new() |> to_string()
+      "0000000000000000000000000000000000000000000000000000000000000000"
+
+  """
+  def new,
+    do: %__MODULE__{}
+
+  @doc """
   Compare two hashed values
 
   This returns a value between -127 and 128 where -127 is different and 128 is

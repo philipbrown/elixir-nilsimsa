@@ -27,7 +27,7 @@ You can also process a stream:
 ```elixir
 "war_and_peace.txt"
 |> File.stream!()
-|> Enum.reduce(Nilsimsa.process(""), &Nilsimsa.process/2)
+|> Enum.reduce(Nilsimsa.new(), &Nilsimsa.process/2)
 ```
 
 ## Generating a digest
